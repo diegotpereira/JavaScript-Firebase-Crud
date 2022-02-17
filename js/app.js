@@ -11,7 +11,11 @@ function adicionarOuAtualizar(event) {
         addJogador(event)
     } else {
         atualizarJogador(id.value)
+        id.value = ''
+        $('#btnAdd').removeClass('d-none')
+        $('#btnAtualizar').addClass('d-none')
     }
+    event.preventDefault()
 }
 
 function addJogador(event) {
@@ -64,4 +68,49 @@ function criarCartaoLista(dado) {
 			 </a>
 		   </div>
 		</div>`)
+}
+
+// Atualizar Jogador
+function editarJogador(pid) {
+    $('#btnAdd').removeClass('d-block')
+    $('#btnAdd').addClass('d-none')
+    $('#btnAtualizar').removeClass('d-none')
+
+    let jogador = getDadosPorId(pid)
+    preencherCamposEntrada(jogador)
+}
+
+function getDadosPorId(pid) {
+    let jogador = ''
+    let ref = firebase.database().ref('jogador/' + pid)
+
+    ref.on('value', function(dado) {
+        jogador = dado.val()
+    }, function(erro) {
+        console.log(erro)
+    })
+    return jogador
+}
+
+// Preencher campos para editar
+function preencherCamposEntrada(jogador) {
+    let nome = document.getElementById('nome')
+    let idade = document.getElementById('idade')
+    let id = document.getElementById('id')
+
+    nome.value = jogador.nome
+    idade.value = jogador.idade
+    id.value = jogador.id
+}
+
+// tualizar Jogador
+function atualizarJogador(id) {
+    let jogador = getDadosEntradaJogador()
+    let atualizarRef = firebase.database().ref('jogador/' + id)
+    jogador.id = id
+    atualizarRef.update(jogador)
+
+    listaJogadores()
+
+    event.preventDefault()
 }
