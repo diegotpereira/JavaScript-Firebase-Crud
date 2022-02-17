@@ -70,7 +70,7 @@ function criarCartaoLista(dado) {
 		</div>`)
 }
 
-// Atualizar Jogador
+// Chamando a Função Atualizar Jogador
 function editarJogador(pid) {
     $('#btnAdd').removeClass('d-block')
     $('#btnAdd').addClass('d-none')
@@ -103,7 +103,7 @@ function preencherCamposEntrada(jogador) {
     id.value = jogador.id
 }
 
-// tualizar Jogador
+// Atualizar Jogador
 function atualizarJogador(id) {
     let jogador = getDadosEntradaJogador()
     let atualizarRef = firebase.database().ref('jogador/' + id)
@@ -113,4 +113,12 @@ function atualizarJogador(id) {
     listaJogadores()
 
     event.preventDefault()
+}
+
+// Deletar Jogador
+function deletarJogador(id) {
+    let jogadorRef = firebase.database().ref('jogador/' + id)
+    jogadorRef.remove()
+
+    listaJogadores()
 }
